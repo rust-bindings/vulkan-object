@@ -17,8 +17,11 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_load_vulkan_object() {
-        let vo = load_vulkan_object();
-        assert!(!vo.commands.is_empty());
+    fn test_round_trip_serialization() {
+        let expected =
+            serde_json::to_string(&serde_json::from_str::<serde_json::Value>(VK_JSON).unwrap())
+                .unwrap();
+        let actual = serde_json::to_string(&load_vulkan_object()).unwrap();
+        assert!(expected == actual);
     }
 }

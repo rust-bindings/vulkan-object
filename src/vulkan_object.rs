@@ -1,6 +1,6 @@
+use indexmap::IndexMap;
 use serde::{Deserialize, Serialize};
 use serde_repr::{Deserialize_repr, Serialize_repr};
-use std::collections::HashMap;
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct FeatureRequirement {
@@ -41,11 +41,11 @@ pub struct Extension {
     pub structs: Vec<Struct>,
     pub enums: Vec<Enum>,
     pub bitmasks: Vec<Bitmask>,
-    pub flags: HashMap<String, Vec<Flags>>,
+    pub flags: IndexMap<String, Vec<Flags>>,
     #[serde(rename = "enumFields")]
-    pub enum_fields: HashMap<String, Vec<EnumField>>,
+    pub enum_fields: IndexMap<String, Vec<EnumField>>,
     #[serde(rename = "flagBits")]
-    pub flag_bits: HashMap<String, Vec<Flag>>,
+    pub flag_bits: IndexMap<String, Vec<Flag>>,
 }
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
@@ -190,7 +190,7 @@ pub struct Member {
     #[serde(rename = "cDeclaration")]
     pub c_declaration: String,
     #[serde(rename = "bitFieldWidth")]
-    pub bit_field_width: Option<i32>,
+    pub bit_field_width: Option<u32>,
     pub selector: Option<String>,
     pub selection: Vec<String>,
 }
@@ -235,7 +235,7 @@ pub struct Enum {
     pub aliases: Vec<String>,
     pub protect: Option<String>,
     #[serde(rename = "bitWidth")]
-    pub bit_width: i32,
+    pub bit_width: u32,
     #[serde(rename = "returnedOnly")]
     pub returned_only: bool,
     pub fields: Vec<EnumField>,
@@ -268,7 +268,7 @@ pub struct Bitmask {
     pub flag_name: String,
     pub protect: Option<String>,
     #[serde(rename = "bitWidth")]
-    pub bit_width: i32,
+    pub bit_width: u32,
     #[serde(rename = "returnedOnly")]
     pub returned_only: bool,
     pub flags: Vec<Flag>,
@@ -287,7 +287,7 @@ pub struct Flags {
     #[serde(rename = "baseFlagsType")]
     pub base_flags_type: String,
     #[serde(rename = "bitWidth")]
-    pub bit_width: i32,
+    pub bit_width: u32,
     #[serde(rename = "returnedOnly")]
     pub returned_only: bool,
     pub extensions: Vec<String>,
@@ -296,7 +296,7 @@ pub struct Flags {
 #[derive(Clone, Debug, Deserialize, Serialize)]
 #[serde(untagged)]
 pub enum ConstantValue {
-    Int(i64),
+    Int(u64),
     Float(f64),
 }
 
@@ -320,16 +320,16 @@ pub struct FormatComponent {
     #[serde(rename = "numericFormat")]
     pub numeric_format: String,
     #[serde(rename = "planeIndex")]
-    pub plane_index: Option<i32>,
+    pub plane_index: Option<u32>,
 }
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct FormatPlane {
-    pub index: i32,
+    pub index: u32,
     #[serde(rename = "widthDivisor")]
-    pub width_divisor: i32,
+    pub width_divisor: u32,
     #[serde(rename = "heightDivisor")]
-    pub height_divisor: i32,
+    pub height_divisor: u32,
     pub compatible: String,
 }
 
@@ -339,12 +339,12 @@ pub struct Format {
     #[serde(rename = "className")]
     pub class_name: String,
     #[serde(rename = "blockSize")]
-    pub block_size: i32,
+    pub block_size: u32,
     #[serde(rename = "texelsPerBlock")]
-    pub texels_per_block: i32,
+    pub texels_per_block: u32,
     #[serde(rename = "blockExtent")]
     pub block_extent: Vec<String>,
-    pub packed: Option<i32>,
+    pub packed: Option<u32>,
     pub chroma: Option<String>,
     pub compressed: Option<String>,
     pub components: Vec<FormatComponent>,
@@ -431,28 +431,28 @@ pub struct VideoFormat {
     pub usage: String,
     #[serde(rename = "requiredCaps")]
     pub required_caps: Vec<VideoRequiredCapabilities>,
-    pub properties: HashMap<String, String>,
+    pub properties: IndexMap<String, String>,
 }
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct VideoProfileMember {
     pub name: String,
-    pub values: HashMap<String, String>,
+    pub values: IndexMap<String, String>,
 }
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct VideoProfiles {
     pub name: String,
-    pub members: HashMap<String, VideoProfileMember>,
+    pub members: IndexMap<String, VideoProfileMember>,
 }
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct VideoCodec {
     pub name: String,
     pub value: Option<String>,
-    pub profiles: HashMap<String, VideoProfiles>,
-    pub capabilities: HashMap<String, String>,
-    pub formats: HashMap<String, VideoFormat>,
+    pub profiles: IndexMap<String, VideoProfiles>,
+    pub capabilities: IndexMap<String, String>,
+    pub formats: IndexMap<String, VideoFormat>,
 }
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
@@ -466,10 +466,10 @@ pub struct VideoStdHeader {
 
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]
 pub struct VideoStd {
-    pub headers: HashMap<String, VideoStdHeader>,
-    pub enums: HashMap<String, Enum>,
-    pub structs: HashMap<String, Struct>,
-    pub constants: HashMap<String, Constant>,
+    pub headers: IndexMap<String, VideoStdHeader>,
+    pub enums: IndexMap<String, Enum>,
+    pub structs: IndexMap<String, Struct>,
+    pub constants: IndexMap<String, Constant>,
 }
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
@@ -478,16 +478,16 @@ pub struct VulkanObject {
     pub header_version: String,
     #[serde(rename = "headerVersionComplete")]
     pub header_version_complete: String,
-    pub extensions: HashMap<String, Extension>,
-    pub versions: HashMap<String, Version>,
-    pub handles: HashMap<String, Handle>,
-    pub commands: HashMap<String, Command>,
-    pub structs: HashMap<String, Struct>,
-    pub enums: HashMap<String, Enum>,
-    pub bitmasks: HashMap<String, Bitmask>,
-    pub flags: HashMap<String, Flags>,
-    pub constants: HashMap<String, Constant>,
-    pub formats: HashMap<String, Format>,
+    pub extensions: IndexMap<String, Extension>,
+    pub versions: IndexMap<String, Version>,
+    pub handles: IndexMap<String, Handle>,
+    pub commands: IndexMap<String, Command>,
+    pub structs: IndexMap<String, Struct>,
+    pub enums: IndexMap<String, Enum>,
+    pub bitmasks: IndexMap<String, Bitmask>,
+    pub flags: IndexMap<String, Flags>,
+    pub constants: IndexMap<String, Constant>,
+    pub formats: IndexMap<String, Format>,
     #[serde(rename = "syncStage")]
     pub sync_stage: Vec<SyncStage>,
     #[serde(rename = "syncAccess")]
@@ -495,11 +495,11 @@ pub struct VulkanObject {
     #[serde(rename = "syncPipeline")]
     pub sync_pipeline: Vec<SyncPipeline>,
     pub spirv: Vec<Spirv>,
-    pub platforms: HashMap<String, String>,
+    pub platforms: IndexMap<String, String>,
     #[serde(rename = "vendorTags")]
     pub vendor_tags: Vec<String>,
     #[serde(rename = "videoCodecs")]
-    pub video_codecs: HashMap<String, VideoCodec>,
+    pub video_codecs: IndexMap<String, VideoCodec>,
     #[serde(rename = "videoStd")]
     pub video_std: Option<VideoStd>,
 }
