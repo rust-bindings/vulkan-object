@@ -1,6 +1,6 @@
 [package]
 name = "vulkan-object"
-version = "0.2.0+1.4.341"
+version = "0.3.0+1.4.341"
 authors = ["Christopher Probst-Ranly"]
 edition = "2024"
 description = "Rust bindings for vulkan-object, providing typed access to Vulkan API metadata."
@@ -10,4 +10,6 @@ license = "MIT"
 
 [dependencies]
 serde = { version = "1.0.228", features = ["derive"] }
-serde_json = "1"
+serde_json = { version = "1", features = ["preserve_order"] }
+serde_repr = "0.1"
+indexmap = { version = "2", features = ["serde"] }
