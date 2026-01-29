@@ -1,4 +1,5 @@
 import ast
+import inspect
 import re
 from dataclasses import asdict
 from enum import Enum
@@ -6,6 +7,7 @@ from json import JSONEncoder, dump
 from pathlib import Path
 
 from vulkan_object import get_vulkan_object
+from vulkan_object import vulkan_object as vulkan_object_module
 
 # Type overrides for known inconsistencies.
 FIELD_TYPE_OVERRIDES = {
@@ -190,11 +192,9 @@ if __name__ == "__main__":
         dump(asdict(vulkan_object), f, indent=2, cls=EnumEncoder)
     print("Generated src/vk.json")
 
-    script_dir = Path(__file__).parent
-    source = (script_dir / "_vulkan_object.py").read_text(encoding="utf-8")
-    dataclasses, enums = extract_classes(source)
+    dataclasses, enums = extract_classes(inspect.getsource(vulkan_object_module))
     rust_code = generate_rust(dataclasses, enums)
-    (script_dir / "src" / "vulkan_object.rs").write_text(
+    (Path(__file__).parent / "src" / "vulkan_object.rs").write_text(
         rust_code, encoding="utf-8", newline="\n"
     )
     print("Generated src/vulkan_object.rs")
