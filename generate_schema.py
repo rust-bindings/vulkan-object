@@ -55,7 +55,7 @@ if __name__ == "__main__":
     )
     assert vulkan_object_json == patched_vulkan_object_json
     json_schema = patched_vulkan_object_json_schema()
-    with open("vk.json", "w") as f:
+    with open("src/vk.json", "w") as f:
         f.write(patched_vulkan_object_json)
     with open("vk-schema.json", "w") as f:
         f.write(json_schema)

@@ -1,6 +1,6 @@
 pub mod schema;
 
-const VK_JSON: &str = include_str!(concat!(env!("OUT_DIR"), "/vk.json"));
+const VK_JSON: &str = include_str!("vk.json");
 
 pub fn load_vulkan_object_from_json_str(s: &str) -> serde_json::Result<schema::VulkanObject> {
     serde_json::from_str(s)

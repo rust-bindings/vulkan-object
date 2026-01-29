@@ -31,6 +31,7 @@ To update to a new Vulkan version:
    source venv/bin/activate  # or venv\Scripts\activate on Windows
    pip install -r requirements.txt
    python generate_schema.py
+   cargo typify -o src/schema.rs vk-schema.json
    ```
 3. Update the crate version in `Cargo.toml` to match.
 4. Build to regenerate Rust types:
@@ -41,7 +42,7 @@ To update to a new Vulkan version:
 ### How It Works
 
 1. `generate_schema.py` extracts data from the Python `vulkan-object` package into `vk.json` and generates a JSON schema (`vk-schema.json`).
-2. `build.rs` uses [typify](https://github.com/oxidecomputer/typify) to generate Rust types from the JSON schema.
+2. Uses [typify](https://github.com/oxidecomputer/typify) to generate Rust types from the JSON schema.
 3. The crate embeds `vk.json` and provides typed access via serde deserialization.
 
 ### Known issues
