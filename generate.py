@@ -98,13 +98,11 @@ def python_type_to_rust(py_type, class_name: str, field_name: str) -> str:
     origin = get_origin(py_type)
     args = get_args(py_type)
 
-    # Union types (T | None).
+    # Union types (T | None) → Option<T>.
     if origin is UnionType:
         non_none = [a for a in args if a is not NoneType]
         if len(non_none) == 1:
             return f"Option<{python_type_to_rust(non_none[0], class_name, field_name)}>"
-        if set(args) == {int, float}:
-            return "ConstantValue"
 
     # Lists.
     if origin is list:
@@ -116,7 +114,7 @@ def python_type_to_rust(py_type, class_name: str, field_name: str) -> str:
         v = python_type_to_rust(args[1], class_name, field_name)
         return f"IndexMap<{k}, {v}>"
 
-    return "UNKNOWN"
+    raise TypeError(f"Unsupported type {py_type} for {class_name}.{field_name}")
 
 
 def extract_classes(module) -> tuple[dict, dict]:
