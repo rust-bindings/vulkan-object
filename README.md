@@ -16,7 +16,7 @@ Rust bindings for [vulkan-object](https://github.com/KhronosGroup/vulkan-object)
 To update to a new Vulkan version:
 
 1. Update `vulkan-object` version in `requirements.txt`
-2. Regenerate the schema files:
+2. Regenerate the files:
    ```sh
    python -m venv venv
    source venv/bin/activate  # or venv\Scripts\activate on Windows
@@ -24,10 +24,6 @@ To update to a new Vulkan version:
    python generate.py
    ```
 3. Update the crate version in `Cargo.toml` to match.
-4. Build to regenerate Rust types:
-   ```sh
-   cargo build
-   ```
 
 ## Potential future adjustments
 
